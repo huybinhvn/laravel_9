@@ -19,7 +19,9 @@ pipeline {
                         docker.image('mariadb:10.5.9').inside("--link ${c.id}:db_mysql") {
                             sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
                         }
-                        sh "./vendor/bin/phpunit"
+                        sh 'php artisan migrate:fresh --seed'
+                        // sh 'php artisan test'
+                        sh 'composer check-style'
                     }
                 }
             }
